@@ -1,0 +1,62 @@
+*:focus {
+  outline: 0;
+}
+
+#slider-range {
+  width:500px;
+  margin-left:200px;
+}
+.ui-widget-header {
+  background:dimgrey;
+  background:#b3b3b3;
+  /*background: coral; salmon*/
+}
+.ui-slider-horizontal {
+  height:.5em;
+}
+
+.ui-slider .ui-slider-handle {
+  height:0.9em;
+  width:0.9em;
+}
+
+.ui-state-default, .ui-widget-header .ui-state-default {
+  background:#000;
+}
+
+#years {
+  margin:15px 0 5px 200px ;
+  padding: 0;
+}
+
+#years input{
+  font-size: 26px;
+  font-family: 'PT Sans Narrow', sans-serif;
+  font-weight: normal;
+  color:dimgrey;
+}
+
+.link {
+  stroke: #ccc;
+  stroke-opacity:0.3;
+}
+
+.node {
+  cursor:move;
+}
+
+.node text {
+  pointer-events: none;
+  font-family: Arial, Helvetica, sans-serif;
+  fill:#626262;
+  text-transform: capitalize;
+  
+}
+
+.node.fixed {
+  fill: #f00;
+}
+
+footer{
+  height:100px;
+}
