@@ -23,8 +23,8 @@ $(function() {
 //alert(year1 + " - " + year2);
 //alert(year1 + "-" year2);
 
-var width = 960,
-height = 700;
+var width = $(document).width() - 25,
+height = ($(window).height() - 50);
 
 var force = d3.layout.force()
 .size([width, height])
