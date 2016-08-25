@@ -1,0 +1,27 @@
+{
+  "name": "d3-force-directed-graph",
+  "version": "0.0.0",
+  "description": "",
+  "main": "graph.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pmargreff/d3-force-directed-graph.git"
+  },
+  "keywords": [
+    "d3",
+    "graph",
+    "datav-visualization"
+  ],
+  "author": "pmargreff",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/pmargreff/d3-force-directed-graph/issues"
+  },
+  "dependencies": {
+    "jquery": "~3.1.0",
+    "d3": "~3.5.17"
+  }
+}

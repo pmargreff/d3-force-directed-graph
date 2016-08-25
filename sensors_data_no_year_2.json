@@ -104,7 +104,7 @@
 		{"source":11,"target":5,"value":1},
 		{"source":11,"target":7,"value":1},
 		{"source":11,"target":10,"value":1},
-		{"source":11,"target":12,"value":4},
+		{"source":11,"target":12,"value":8},
 		{"source":11,"target":13,"value":5.2},
 		{"source":11,"target":15,"value":1},
 		{"source":12,"target":0,"value":2.6},
