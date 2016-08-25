@@ -50,19 +50,25 @@ var fontSizeScale = d3.scale.linear()
 .domain([2,40,82])
 .range([10,14,22]);
 
-d3.json("sensors_data_no_year_2.json", function(error, json){
-  force
-  .nodes(json.nodes)
-  .links(json.links)
-  .start();
+
+d3.csv("data.csv" , function(error, csv) {
+  nodes = {};
+  links = {};
   
-  link = link.data(json.links)
+  nodes = getNodes(csv);
+  links = getLinks(csv);  // console.log(json);
+  
+  force
+  .nodes(nodes)
+  .links(links)
+  .start();
+  link = link.data(links)
   .enter().append("line")
   .attr("class", "link")
   
   link.style("stroke-width", function(d) {return (d.value/2 + "px");});
   
-  node = node.data(json.nodes)
+  node = node.data(nodes)
   .enter().append("g")
   .attr("class", "node")
   .on("dblclick", dblclick)
@@ -155,4 +161,34 @@ function dblclick(d){
 
 function dragstart(d){
   d3.select(this).classed("fixed", d.fixed = true);
+}
+
+function getNodes(data) {
+  var nodes = [];
+  
+  for (var i = 0; data[i].param4; i++) {
+    nodes.push({
+      name: data[i].param1,
+      group: parseInt(data[i].param2),
+      image: data[i].param3,
+      radius: parseFloat(data[i].param4)
+    })
+  }
+  return nodes;
+}
+
+function getLinks(data) {
+  var links = [];
+  var i;
+  
+  for (i = 0; data[i].param4; i++) {}
+  
+  for (i; data[i]; i++) {
+    links.push({
+      source: parseInt(data[i].param1),
+      target: parseInt(data[i].param2), 
+      value: parseFloat(data[i].param3)
+    })
+  }
+  return links;
 }
