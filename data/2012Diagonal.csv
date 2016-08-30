@@ -1,0 +1,18 @@
+"IR"	"Hall"	"acce"	"gyro"	"magn"	"FSR"	"cap"	"photoLight"	"bio"	"mic"	"ultrasound"	"bend"	"buttonsResistance"	"video"	"piezo"	"pressureFlow"	"fabric"
+"IR"	3	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	1
+"Hall"	0	3	1	1	1	1	0	0	0	0	1	1	1	0	0	0	0
+"acce"	0	1	19	11	6	1	0	0	0	0	1	0	2	0	1	1	1
+"gyro"	0	1	11	11	6	0	0	0	0	0	0	0	0	0	0	0	0
+"magn"	0	1	6	6	7	0	0	0	0	0	0	0	0	0	0	0	0
+"FSR"	0	1	1	0	0	6	0	0	0	0	1	2	2	0	0	0	0
+"cap"	0	0	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0
+"photoLight"	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0
+"bio"	0	0	0	0	0	0	0	0	4	0	0	0	0	0	0	0	0
+"mic"	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+"ultrasound"	0	1	1	0	0	1	0	0	0	0	3	2	3	0	1	0	0
+"bend"	0	1	0	0	0	2	0	0	0	0	2	3	2	0	0	0	0
+"buttonsResistance"	1	1	2	0	0	2	0	0	0	0	3	2	6	0	2	0	0
+"video"	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0
+"piezo"	0	0	1	0	0	0	0	0	0	0	1	0	2	0	4	0	0
+"pressureFlow"	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	2	0
+"fabric"	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	3

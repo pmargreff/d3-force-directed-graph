@@ -51,12 +51,10 @@ var fontSizeScale = d3.scale.linear()
 .range([10,14,22]);
 
 
-d3.csv("data.csv" , function(error, csv) {
-  nodes = {};
-  links = {};
-  
-  nodes = getNodes(csv);
-  links = getLinks(csv);  // console.log(json);
+d3.csv("data/2009Diagonal.csv" , function(error, csv) {
+
+  nodes = createNodes(csv);  
+  links = createLinks(csv);
   
   force
   .nodes(nodes)
@@ -78,29 +76,17 @@ d3.csv("data.csv" , function(error, csv) {
   .attr("r", function(d){return d.radius;})
   .attr("fill", function(d){return colorScale(d.radius);})
   .attr("fill-opacity", 0.95);
-  
-  /*node.append("rect")
-  .attr("x", 0)
-  .attr("y", 0)
-  .attr("rx", 5)
-  .attr("ry", 5)
-  .attr("width", 50)
-  .attr("height", 20)
-  .attr("fill", "white")
-  .style("fill-opacity", 0.8)
-  .attr("stroke","#ccc")
-  .attr("stroke-width",0.5);*/
-  
+
   node.append("text")
   .attr("text-anchor", "middle")
   .attr("dx", 0)
   .attr("dy", function(d){return d.radius + 15;})
   .style("font-size", function(d){return fontSizeScale(d.radius);})
-  .text(function(d){return d.name});
-  
-  //node.on('mouseover', function(d) {
-  
-  //});
+  .text(function(d){
+    if (d.radius != 0) {
+      return d.name
+    }
+  });
   
   d3.selectAll(".node")
   .on("mouseover", function(d) {
@@ -136,15 +122,11 @@ d3.csv("data.csv" , function(error, csv) {
     .transition()
     .style("font-size", function(d){
       return fontSizeScale(d.radius);
-    })
-    //link
-    //	.transition()
-    //	.style("stroke-opacity", 0.3)
-    
+    })    
   });
   
   
-}); //end json function
+}); 
 
 function tick() {
   link.attr("x1", function(d) { return d.source.x; })
@@ -163,32 +145,35 @@ function dragstart(d){
   d3.select(this).classed("fixed", d.fixed = true);
 }
 
-function getNodes(data) {
+
+function createNodes(data) {
   var nodes = [];
   
-  for (var i = 0; data[i].param4; i++) {
+  for (var i = 0; i < data.length; i++) {
+    // console.log(data[i][Object.keys(data[i])[i]]);
     nodes.push({
-      name: data[i].param1,
-      group: parseInt(data[i].param2),
-      image: data[i].param3,
-      radius: parseFloat(data[i].param4)
+      name: Object.keys(data[i])[i],
+      group: i,
+      radius: parseFloat(data[i][Object.keys(data[i])[i]]) * 2
     })
   }
+  
+  
   return nodes;
 }
 
-function getLinks(data) {
-  var links = [];
-  var i;
-  
-  for (i = 0; data[i].param4; i++) {}
-  
-  for (i; data[i]; i++) {
-    links.push({
-      source: parseInt(data[i].param1),
-      target: parseInt(data[i].param2), 
-      value: parseFloat(data[i].param3)
-    })
+function createLinks(data) {
+  links = [];
+  for (var i = 0; i < data.length; i++) {
+    for (var j = 0; j < data.length; j++) {
+      if (i != j && data[i][Object.keys(data[i])[j]] != 0) {
+        links.push({
+          source: i,
+          target: j, 
+          value: parseFloat(data[i][Object.keys(data[i])[j]]) * 2
+        })
+      }
+    }
   }
   return links;
 }
