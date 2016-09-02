@@ -1,27 +1,34 @@
-var year1, year2;
-
 $(function() {
-  $( "#slider-range" ).slider({
+  $( "#slider").slider({
     range: true,
     min: 2009,
     max: 2013,
-    values: [ 2009, 2010 ],
+    values: [ 2009, 2013 ],
     slide: function( event, ui ) {
-      $( "#x-axis" ).val( + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      $( "#amount" ).val( "" + ui.values[ 0 ] + " - "+ ui.values[ 1 ] );
     }
   });
-  $( "#x-axis" ).val( $( "#slider-range" ).slider( "values", 0 ) +
-  " - " + $("#slider-range").slider("values", 1));
-  
-  year1 = $("#slider-range").slider("values", 0);
-  year2 = $("#slider-range").slider("values", 1);
-  
-  
-  //var year1 = $( "#x-axis" ).val( $( "#slider-range" ).slider( "values", 0 );
-  //year2 = $( "#slider-range" ).slider( "values", 1 );
+  $( "#amount" ).val( " " + $( "#slider" ).slider( "values", 0 ) +
+  " - " + $( "#slider" ).slider( "values", 1 ) );
 });
-//alert(year1 + " - " + year2);
-//alert(year1 + "-" year2);
+
+var q = d3.queue();
+q.defer(d3.csv, "/data/data09.csv")
+q.defer(d3.csv, "/data/data10.csv")
+q.defer(d3.csv, "/data/data11.csv")
+q.defer(d3.csv, "/data/data12.csv")
+q.await(analyze);
+
+function analyze(error, data09, data10, data11, data12) {
+  if(error) { 
+    console.log(error); 
+  }
+  
+  console.log(data09[0]);
+  console.log(data10[0]);
+  console.log(data11[0]);
+  console.log(data12[0]);
+}
 
 var width = $(document).width() - 25,
 height = ($(window).height() - 50);
@@ -50,9 +57,7 @@ var fontSizeScale = d3.scale.linear()
 .domain([2,40,82])
 .range([10,14,22]);
 
-
-d3.csv("data/2009Diagonal.csv" , function(error, csv) {
-
+d3.csv("data/data09.csv" , function(error, csv) {
   nodes = createNodes(csv);  
   links = createLinks(csv);
   
@@ -76,7 +81,7 @@ d3.csv("data/2009Diagonal.csv" , function(error, csv) {
   .attr("r", function(d){return d.radius;})
   .attr("fill", function(d){return colorScale(d.radius);})
   .attr("fill-opacity", 0.95);
-
+  
   node.append("text")
   .attr("text-anchor", "middle")
   .attr("dx", 0)
@@ -150,7 +155,6 @@ function createNodes(data) {
   var nodes = [];
   
   for (var i = 0; i < data.length; i++) {
-    // console.log(data[i][Object.keys(data[i])[i]]);
     nodes.push({
       name: Object.keys(data[i])[i],
       group: i,
