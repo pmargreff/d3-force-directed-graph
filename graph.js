@@ -6,6 +6,7 @@ $(function() {
     values: [ 2009, 2013 ],
     slide: function( event, ui ) {
       $( "#amount" ).val( "" + ui.values[ 0 ] + " - "+ ui.values[ 1 ] );
+      sumYearsRange(ui.values[ 0 ], ui.values[ 1 ]);
     }
   });
   $( "#amount" ).val( " " + $( "#slider" ).slider( "values", 0 ) +
@@ -13,53 +14,33 @@ $(function() {
 });
 
 var q = d3.queue();
-q.defer(d3.csv, "/data/data09.csv")
-q.defer(d3.csv, "/data/data10.csv")
-q.defer(d3.csv, "/data/data11.csv")
-q.defer(d3.csv, "/data/data12.csv")
-q.await(analyze);
+q.defer(d3.csv, "/data/data09.csv");
+q.defer(d3.csv, "/data/data10.csv");
+q.defer(d3.csv, "/data/data11.csv");
+q.defer(d3.csv, "/data/data12.csv");
+q.await(update);
 
-function analyze(error, data09, data10, data11, data12) {
+function sumYearsRange(firstYear, lastYear) {
+  console.log(firstYear);
+  console.log(lastYear);
+  for (var i = firstYear; i <= lastYear; i++) {
+    
+  }
+}
+function update(error, data09, data10, data11, data12) {
   if(error) { 
     console.log(error); 
   }
   
-  console.log(data09[0]);
-  console.log(data10[0]);
-  console.log(data11[0]);
-  console.log(data12[0]);
-}
-
-var width = $(document).width() - 25,
-height = ($(window).height() - 50);
-
-var force = d3.layout.force()
-.size([width, height])
-.charge(-400)
-.linkDistance(300)
-.on("tick", tick);
-
-var drag = force.drag()
-.on("dragstart", dragstart);
-
-var svg = d3.select("body").append("svg")
-.attr("width", width)
-.attr("height", height);
-
-var link = svg.selectAll(".link"),
-node = svg.selectAll(".node");
-
-var colorScale = d3.scale.linear()
-.domain([2, 40, 82])
-.range(["gold", "tomato", "crimson"]);
-
-var fontSizeScale = d3.scale.linear()
-.domain([2,40,82])
-.range([10,14,22]);
-
-d3.csv("data/data09.csv" , function(error, csv) {
-  nodes = createNodes(csv);  
-  links = createLinks(csv);
+  var data = []
+  
+  data.push(data09);
+  data.push(data10);
+  data.push(data11);
+  data.push(data12);
+  
+  nodes = createNodes(data);  
+  links = createLinks(data);
   
   force
   .nodes(nodes)
@@ -131,6 +112,37 @@ d3.csv("data/data09.csv" , function(error, csv) {
   });
   
   
+}
+
+var width = $(document).width() - 25,
+height = ($(window).height() - 50);
+
+var force = d3.layout.force()
+.size([width, height])
+.charge(-400)
+.linkDistance(300)
+.on("tick", tick);
+
+var drag = force.drag()
+.on("dragstart", dragstart);
+
+var svg = d3.select("body").append("svg")
+.attr("width", width)
+.attr("height", height);
+
+var link = svg.selectAll(".link"),
+node = svg.selectAll(".node");
+
+var colorScale = d3.scale.linear()
+.domain([2, 40, 82])
+.range(["gold", "tomato", "crimson"]);
+
+var fontSizeScale = d3.scale.linear()
+.domain([2,40,82])
+.range([10,14,22]);
+
+d3.csv("data/data09.csv" , function(error, csv) {
+  
 }); 
 
 function tick() {
@@ -151,33 +163,66 @@ function dragstart(d){
 }
 
 
-function createNodes(data) {
+function createNodes(csv) {
   var nodes = [];
+  
+  data = csv[0];
   
   for (var i = 0; i < data.length; i++) {
     nodes.push({
       name: Object.keys(data[i])[i],
       group: i,
-      radius: parseFloat(data[i][Object.keys(data[i])[i]]) * 2
+      radius: parseFloat("0.0")
     })
   }
   
+  for (var i = 0; i < csv.length; i++) {
+    data = csv[i];
+    for (var j = 0; j < nodes.length; j++) {
+      nodes[j].radius += parseFloat(data[j][Object.keys(data[j])[j]]);
+    }
+  }
   
   return nodes;
 }
 
-function createLinks(data) {
+function createLinks(csv) {
+  
   links = [];
+  
+  data = csv[0];
+  
   for (var i = 0; i < data.length; i++) {
     for (var j = 0; j < data.length; j++) {
-      if (i != j && data[i][Object.keys(data[i])[j]] != 0) {
+      if (i != j) {
         links.push({
           source: i,
           target: j, 
-          value: parseFloat(data[i][Object.keys(data[i])[j]]) * 2
+          // value: parseFloat(data[i][Object.keys(data[i])[j]])
+          value: parseFloat("0.0")
         })
       }
     }
   }
-  return links;
+  
+  for (var k = 0; k < csv.length; k++) {
+    data = csv[k];
+    for (var i = 0; i < data.length - 1; i++) {
+      for (var j = 0; j < data.length; j++) {
+        if (i != j) {
+          links[(i * data.length) + j].value += parseFloat(data[i][Object.keys(data[i])[j]]);
+        }
+      }
+    }
+  }
+  
+  var finalLinks = [];
+  
+  for (var i = 0; i < links.length; i++) {
+    if (links[i].value != 0) {
+      finalLinks.push(links[i]);
+    }
+  }
+    
+  return finalLinks;
 }
