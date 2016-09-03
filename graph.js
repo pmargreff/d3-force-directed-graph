@@ -14,30 +14,40 @@ $(function() {
 });
 
 var q = d3.queue();
-q.defer(d3.csv, "/data/data09.csv");
-q.defer(d3.csv, "/data/data10.csv");
-q.defer(d3.csv, "/data/data11.csv");
-q.defer(d3.csv, "/data/data12.csv");
-q.await(update);
+q.defer(d3.csv, "/data/data2009.csv");
+q.defer(d3.csv, "/data/data2010.csv");
+q.defer(d3.csv, "/data/data2011.csv");
+q.defer(d3.csv, "/data/data2012.csv");
+q.defer(d3.csv, "/data/data2013.csv");
+q.awaitAll(init);
+
+var totalData = [];
 
 function sumYearsRange(firstYear, lastYear) {
-  console.log(firstYear);
-  console.log(lastYear);
+  firstYear -= 2009;
+  lastYear -= 2009;
+  
+  newData = [];
+  
   for (var i = firstYear; i <= lastYear; i++) {
-    
+    newData.push(totalData[i]);
   }
+  
+  newNodes = createNodes(newData);
+  
+  d3.selectAll("circle")
+  .attr('r', function(data, index) {
+    console.log(index);
+    return newNodes[index].radius;
+  });
 }
-function update(error, data09, data10, data11, data12) {
+
+function init(error, data) {
   if(error) { 
     console.log(error); 
   }
   
-  var data = []
-  
-  data.push(data09);
-  data.push(data10);
-  data.push(data11);
-  data.push(data12);
+  totalData = data;
   
   nodes = createNodes(data);  
   links = createLinks(data);
@@ -141,10 +151,6 @@ var fontSizeScale = d3.scale.linear()
 .domain([2,40,82])
 .range([10,14,22]);
 
-d3.csv("data/data09.csv" , function(error, csv) {
-  
-}); 
-
 function tick() {
   link.attr("x1", function(d) { return d.source.x; })
   .attr("y1", function(d) { return d.source.y; })
@@ -223,6 +229,6 @@ function createLinks(csv) {
       finalLinks.push(links[i]);
     }
   }
-    
+  
   return finalLinks;
 }
