@@ -33,12 +33,31 @@ function sumYearsRange(firstYear, lastYear) {
     newData.push(totalData[i]);
   }
   
+  d3.selectAll(".link")
+  .remove();
+  
+  newLinks = createLinks(newData);
+  
+  force
+  .links(newLinks)
+  .start();
+  link = link.data(links)
+  .enter().insert("line", ":first-child")
+  .attr("class", "link");
+  
+  
   newNodes = createNodes(newData);
   
   d3.selectAll("circle")
   .attr('r', function(data, index) {
-    console.log(index);
     return newNodes[index].radius;
+  });
+
+  d3.selectAll(".link")
+  .style("stroke-width", function(d) {
+    console.log(d.value+"px");
+    return d.value + "px";
+    
   });
 }
 
@@ -60,7 +79,10 @@ function init(error, data) {
   .enter().append("line")
   .attr("class", "link")
   
-  link.style("stroke-width", function(d) {return (d.value/2 + "px");});
+  link
+  .style("stroke-width", function(d) {
+    return (d.value/2 + "px");
+  });
   
   node = node.data(nodes)
   .enter().append("g")
@@ -204,7 +226,6 @@ function createLinks(csv) {
         links.push({
           source: i,
           target: j, 
-          // value: parseFloat(data[i][Object.keys(data[i])[j]])
           value: parseFloat("0.0")
         })
       }
