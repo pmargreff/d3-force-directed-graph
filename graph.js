@@ -33,32 +33,20 @@ function sumYearsRange(firstYear, lastYear) {
     newData.push(totalData[i]);
   }
   
-  d3.selectAll(".link")
-  .remove();
-  
   newLinks = createLinks(newData);
-  
-  force
-  .links(newLinks)
-  .start();
-  link = link.data(links)
-  .enter().insert("line", ":first-child")
-  .attr("class", "link");
-  
-  
+  d3.selectAll(".link")
+  .style("stroke-width", function(d) {
+    return (getLinkValue(newLinks, d.source.index, d.target.index ) + "px");
+  });
+
   newNodes = createNodes(newData);
   
   d3.selectAll("circle")
+  .transition()
   .attr('r', function(data, index) {
     return newNodes[index].radius;
   });
-
-  d3.selectAll(".link")
-  .style("stroke-width", function(d) {
-    console.log(d.value+"px");
-    return d.value + "px";
-    
-  });
+  
 }
 
 function init(error, data) {
@@ -70,7 +58,6 @@ function init(error, data) {
   
   nodes = createNodes(data);  
   links = createLinks(data);
-  
   force
   .nodes(nodes)
   .links(links)
@@ -122,7 +109,6 @@ function init(error, data) {
     })
     .style('stroke', function(l) {
       if (d === l.source || d === l.target)
-      //return "crimson";
       return "coral";
     })
     .style('stroke-width', function(l){
@@ -219,10 +205,9 @@ function createLinks(csv) {
   links = [];
   
   data = csv[0];
-  
   for (var i = 0; i < data.length; i++) {
     for (var j = 0; j < data.length; j++) {
-      if (i != j) {
+      if (i != j & i < j) {
         links.push({
           source: i,
           target: j, 
@@ -232,24 +217,22 @@ function createLinks(csv) {
     }
   }
   
-  for (var k = 0; k < csv.length; k++) {
-    data = csv[k];
-    for (var i = 0; i < data.length - 1; i++) {
-      for (var j = 0; j < data.length; j++) {
-        if (i != j) {
-          links[(i * data.length) + j].value += parseFloat(data[i][Object.keys(data[i])[j]]);
-        }
-      }
+  
+  for (yearData of csv) {
+    for (var i = 0; i < links.length; i++) {
+      myKey = Object.keys(yearData[0])[links[i].target];
+      links[i].value += parseFloat(yearData[links[i].source][myKey]);
     }
   }
   
-  var finalLinks = [];
-  
+  return links;
+}
+
+function getLinkValue(links, parent, child) {
   for (var i = 0; i < links.length; i++) {
-    if (links[i].value != 0) {
-      finalLinks.push(links[i]);
+    if (links[i].source == parent && links[i].target == child) {
+      return links[i].value;
     }
   }
-  
-  return finalLinks;
+  return 0;
 }
