@@ -41,10 +41,22 @@ function sumYearsRange(firstYear, lastYear) {
 
   newNodes = createNodes(newData);
   
+  d3.selectAll("text")
+  .transition()
+  .style("font-size", function (data, index) {
+    return fontSizeScale(newNodes[index].radius);
+  })
+  .transition()
+  .attr("dy", function(data, index){return newNodes[index].radius + 15;});
+  
   d3.selectAll("circle")
   .transition()
   .attr('r', function(data, index) {
     return newNodes[index].radius;
+  })
+  
+  .attr("fill", function(data, index){
+    return colorScale(newNodes[index].radius);
   });
   
 }
