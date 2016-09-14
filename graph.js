@@ -44,8 +44,12 @@ function sumYearsRange(firstYear, lastYear) {
   d3.selectAll("text")
   .transition()
   .style("font-size", function (data, index) {
-    return fontSizeScale(newNodes[index].radius);
+    if (newNodes[index].radius != 0) {
+      return fontSizeScale(newNodes[index].radius);
+    }
+    return 0;
   })
+  
   .transition()
   .attr("dy", function(data, index){return newNodes[index].radius + 15;});
   
