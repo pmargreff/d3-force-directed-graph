@@ -7,6 +7,12 @@
   margin-left:200px;
 }
 
+#amount {
+  border: 0; 
+  color: #f6931f; 
+  font-weight: bold;  
+}
+
 body {
   margin: 15px;
 }
@@ -29,8 +35,4 @@ body {
 
 .node.fixed {
   fill: #f00;
-}
-
-footer{
-  height:50px;
 }

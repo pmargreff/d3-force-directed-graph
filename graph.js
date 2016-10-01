@@ -6,11 +6,19 @@ $(function() {
     values: [ 2009, 2013 ],
     slide: function( event, ui ) {
       $( "#amount" ).val( "" + ui.values[ 0 ] + " - "+ ui.values[ 1 ] );
-      sumYearsRange(ui.values[ 0 ], ui.values[ 1 ]);
+      sumYearsRange(ui.values[ 0 ], ui.values[ 1 ], false);
     }
   });
   $( "#amount" ).val( " " + $( "#slider" ).slider( "values", 0 ) +
   " - " + $( "#slider" ).slider( "values", 1 ) );
+});
+
+var scale = 1.0;
+var newNodes;
+var newLinks;
+
+$("input[type=number]").bind('keyup input', function(){
+  sumYearsRange($( "#slider" ).slider( "values", 0 ),$( "#slider" ).slider( "values", 1 ), true);
 });
 
 var q = d3.queue();
@@ -22,48 +30,33 @@ q.defer(d3.csv, "/data/data2013.csv");
 q.awaitAll(init);
 
 var totalData = [];
+var width = $(document).width() - 30,
+height = $(window).height() - 80;
 
-function sumYearsRange(firstYear, lastYear) {
-  firstYear -= 2009;
-  lastYear -= 2009;
-  
-  newData = [];
-  
-  for (var i = firstYear; i <= lastYear; i++) {
-    newData.push(totalData[i]);
-  }
-  
-  newLinks = createLinks(newData);
-  d3.selectAll(".link")
-  .style("stroke-width", function(d) {
-    return (getLinkValue(newLinks, d.source.index, d.target.index ) + "px");
-  });
+var force = d3.layout.force()
+.size([width, height])
+.charge(-400)
+.linkDistance(300)
+.on("tick", tick);
 
-  newNodes = createNodes(newData);
-  
-  d3.selectAll("text")
-  .transition()
-  .style("font-size", function (data, index) {
-    if (newNodes[index].radius != 0) {
-      return fontSizeScale(newNodes[index].radius);
-    }
-    return 0;
-  })
-  
-  .transition()
-  .attr("dy", function(data, index){return newNodes[index].radius + 15;});
-  
-  d3.selectAll("circle")
-  .transition()
-  .attr('r', function(data, index) {
-    return newNodes[index].radius;
-  })
-  
-  .attr("fill", function(data, index){
-    return colorScale(newNodes[index].radius);
-  });
-  
-}
+var drag = force.drag()
+.on("dragstart", dragstart);
+
+var svg = d3.select("body").append("svg")
+.attr("width", width)
+.attr("height", height);
+
+var link = svg.selectAll(".link"),
+node = svg.selectAll(".node");
+
+var colorScale = d3.scale.linear()
+.domain([2, 40, 82])
+.range(["gold", "tomato", "crimson"]);
+
+var fontSizeScale = d3.scale.linear()
+.domain([2,40,82])
+.range([10,14,22]);
+
 
 function init(error, data) {
   if(error) { 
@@ -72,13 +65,13 @@ function init(error, data) {
   
   totalData = data;
   
-  nodes = createNodes(data);  
-  links = createLinks(data);
+  newNodes = createNodes(data);  
+  newLinks = createLinks(data);
   force
-  .nodes(nodes)
-  .links(links)
+  .nodes(newNodes)
+  .links(newLinks)
   .start();
-  link = link.data(links)
+  link = link.data(newLinks)
   .enter().append("line")
   .attr("class", "link")
   
@@ -87,7 +80,7 @@ function init(error, data) {
     return (d.value/2 + "px");
   });
   
-  node = node.data(nodes)
+  node = node.data(newNodes)
   .enter().append("g")
   .attr("class", "node")
   .on("dblclick", dblclick)
@@ -143,37 +136,58 @@ function init(error, data) {
     .style("font-size", function(d){
       return fontSizeScale(d.radius);
     })    
-  });
-  
-  
+  });  
 }
 
-var width = $(document).width() - 25,
-height = ($(window).height() - 50);
-
-var force = d3.layout.force()
-.size([width, height])
-.charge(-400)
-.linkDistance(300)
-.on("tick", tick);
-
-var drag = force.drag()
-.on("dragstart", dragstart);
-
-var svg = d3.select("body").append("svg")
-.attr("width", width)
-.attr("height", height);
-
-var link = svg.selectAll(".link"),
-node = svg.selectAll(".node");
-
-var colorScale = d3.scale.linear()
-.domain([2, 40, 82])
-.range(["gold", "tomato", "crimson"]);
-
-var fontSizeScale = d3.scale.linear()
-.domain([2,40,82])
-.range([10,14,22]);
+function sumYearsRange(firstYear, lastYear, scaling) {
+  firstYear -= 2009;
+  lastYear -= 2009;
+  scale = $("#scale").val();
+  
+  newData = [];
+  
+  for (var i = firstYear; i <= lastYear; i++) {
+    newData.push(totalData[i]);
+  }
+  
+  newLinks = createLinks(newData);
+  d3.selectAll(".link")
+  .style("stroke-width", function(d) {
+    return (scale * getLinkValue(newLinks, d.source.index, d.target.index )/2 + "px");
+  });
+  
+  newNodes = createNodes(newData);
+  
+  d3.selectAll("text")
+  .transition()
+  .style("font-size", function (data, index) {
+    if (newNodes[index].radius != 0) {
+      return fontSizeScale(scale * newNodes[index].radius);
+    }
+    return 0;
+  })
+  
+  .transition()
+  .attr("dy", function(data, index){return scale * newNodes[index].radius + 15;});
+  
+  if (scaling) {
+    d3.selectAll("circle")
+    .transition()
+    .attr('r', function(data, index) {
+      return (scale * newNodes[index].radius);
+    });
+  } else {
+    d3.selectAll("circle")
+    .transition()
+    .attr('r', function(data, index) {
+      return (scale * newNodes[index].radius);
+    })
+    .attr("fill", function(data, index){
+      return colorScale(newNodes[index].radius);
+    });
+  }
+  
+}
 
 function tick() {
   link.attr("x1", function(d) { return d.source.x; })
@@ -217,7 +231,6 @@ function createNodes(csv) {
 }
 
 function createLinks(csv) {
-  
   links = [];
   
   data = csv[0];
@@ -233,14 +246,12 @@ function createLinks(csv) {
     }
   }
   
-  
   for (yearData of csv) {
     for (var i = 0; i < links.length; i++) {
       myKey = Object.keys(yearData[0])[links[i].target];
       links[i].value += parseFloat(yearData[links[i].source][myKey]);
     }
   }
-  
   return links;
 }
 

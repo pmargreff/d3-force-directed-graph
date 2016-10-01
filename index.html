@@ -14,15 +14,14 @@
   <script src="node_modules/d3-queue/build/d3-queue.min.js" type="text/javascript"></script>
 </head>
 <body>
-  <script src="graph.js" type="text/javascript"></script>
-  
   <p>
     <label for="amount">Year range:</label>
-    <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
+    <input type="text" name="amount" id="amount"/>    
+    <label for="scale">Scale:</label>
+    <input type="number" name="scale" id="scale" min="0.1" step="0.1" value="1">
   </p>
-
   <div id="slider"></div>  
-
-  <footer></footer>
+  
+  <script src="graph.js" type="text/javascript"></script>
 </body>
 </html>
