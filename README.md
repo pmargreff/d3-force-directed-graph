@@ -2,7 +2,7 @@
 
 ## Screencast
 
-<img src="https://raw.github.com/pmargreff/d3-force-directed-graph/master/demo.gif" width="400" />
+<img src="https://raw.github.com/pmargreff/d3-force-directed-graph/master/demo.gif" width="800" />
 
 ## Install
 
