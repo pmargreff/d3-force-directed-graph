@@ -1,5 +1,9 @@
 # D3 graph
 
+## Example
+
+You can access a visualization sample [here](https://pmargreff.github.io/d3-force-directed-graph).
+
 ## Screencast
 
 <img src="https://raw.github.com/pmargreff/d3-force-directed-graph/master/demo.gif" width="800" />
