@@ -16,7 +16,7 @@
 Open `http://127.0.0.1:3000/`
 
 ## TODO:
-- [x] choose the sizeScale
+- [x] choose the size scale
 
 - [ ] choose the input pattern name and range
 
