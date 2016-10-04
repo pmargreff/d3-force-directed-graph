@@ -1,8 +1,13 @@
 # D3 graph
 
-Inside main dir:
+## Screencast
+
+<img src="https://raw.github.com/pmargreff/d3-force-directed-graph/master/demo.gif" width="400" />
 
 ## Install
+
+`sudo npm install http-server -g`
+
 `npm install`
 
 ## Run
@@ -10,8 +15,11 @@ Inside main dir:
 
 Open `http://127.0.0.1:3000/`
 
-#TODO:
-2 - choose the pattern name when init
-3 - choose the sizeScale
-4 - choose the colorScale
-5 - switch to change between add/remove and move nodes
+## TODO:
+- [x] choose the sizeScale
+
+- [ ] choose the input pattern name and range
+
+- [ ] choose the color scale
+
+- [ ] switch to change between add/remove and move nodes
