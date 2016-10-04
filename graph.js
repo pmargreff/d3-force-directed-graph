@@ -22,11 +22,11 @@ $("input[type=number]").bind('keyup input', function(){
 });
 
 var q = d3.queue();
-q.defer(d3.csv, "/data/data2009.csv");
-q.defer(d3.csv, "/data/data2010.csv");
-q.defer(d3.csv, "/data/data2011.csv");
-q.defer(d3.csv, "/data/data2012.csv");
-q.defer(d3.csv, "/data/data2013.csv");
+q.defer(d3.csv, "data/data2009.csv");
+q.defer(d3.csv, "data/data2010.csv");
+q.defer(d3.csv, "data/data2011.csv");
+q.defer(d3.csv, "data/data2012.csv");
+q.defer(d3.csv, "data/data2013.csv");
 q.awaitAll(init);
 
 var totalData = [];
