@@ -18,24 +18,48 @@
 
 <body>
   <div class="row">
-    <p class="col s2">
-      <label for="amount">Year range:</label>
-      <input type="text" name="amount" id="amount" disabled/>    
-    </p>
-    <p class="col s2">
-      <label for="scale">Scale:</label>
-      <input type="number" name="scale" id="scale" min="0.1" step="0.1" value="1">
-    </p>
+    <div id="graph-panel" class="col s10">
+    </div>
+    <div class="col s2">
+      <p class="col s12">
+        <label for="amount">Year range:</label>
+        <input type="text" name="amount" id="amount" disabled/>    
+      </p>
+      <p class="col s12">
+        <label for="scale">Scale:</label>
+        <input type="number" name="scale" id="scale" min="0.1" step="0.1" value="1">
+      </p>
+      <div class="col s12">
+        <ul>
+          <li>Coffee</li>
+          <li>Tea</li>
+          <li>Milk</li>
+          <li>Coffee</li>
+          <li>Tea</li>
+          <li>Milk</li>
+          <li>Coffee</li>
+          <li>Tea</li>
+          <li>Milk</li>
+        </ul>
+      </div>
+      
+    </div>
   </div>
-  <div id="slider"></div>  
   
   <script src="graph.js" type="text/javascript"></script>
+  <div class="" style="margin-top: 135px">
+    <div id="slider"></div>  
+  </div>
+  
 </body>
 </html>
 <!-- TODO: 
 1 - reservar espaço
 2 - chave para mover/excluir - feito
 3 - excluir nodo ao clicar - feito
-4 - excluir linha ao ocultar nodos - 
+4 - excluir linha ao ocultar nodos - feito
 4 - colocar nodo excluido em uma lista - ok
-5 - recolocar nodo ao clica-lo -->
+5 - criar uma lista para que o usuário veja os nodos excluídos
+6 - recolocar nodo ao clica-lo 
+7 - alterar slider para entrada tetxo
+8 - alterar tamanho da tela para tamanho ocupado pela div-->

@@ -31,8 +31,8 @@ q.defer(d3.csv, "/data/data2013.csv");
 q.awaitAll(init);
 
 var totalData = [];
-var width = $(document).width() - 30,
-height = $(window).height() - 80;
+var width = $("#graph-panel").width(),
+height = $(window).height() - 100;
 
 var force = d3.layout.force()
 .size([width, height])
@@ -201,7 +201,7 @@ function tick() {
 
 function dblclick(d,i){
   d3.select(this).attr("visibility","hidden");
-  hidNodes.push(i);
+  hidNodes.push(d);
   // d3.selectAll("line").attr("visibility","hidden");
   
   d3.selectAll('line')
@@ -211,16 +211,8 @@ function dblclick(d,i){
     }
   });
   
-  // console.log(hidNodes);
-  // link.style("opacity", function(o) {
-  //   return o.source === d || o.target === d ? 1 : opacity;
-  // });
-  // console.log(getLinks(d, d3.selectAll("line")));
-  // get all lines for a node
-  // hidde all lines from the node
   // this.remove();
   // force.resume();//restart the layout
-  // d3.select(this).classed("fixed", d.fixed = false);
 }
 
 function dragstart(d){
@@ -303,3 +295,5 @@ function getLinkValue(links, parent, child) {
   }
   return 0;
 }
+
+$("svg").css({top: 0, left: 0, position:'absolute'});
