@@ -3,8 +3,8 @@
 }
 
 #slider {
-  width:300px;
-  margin-left:200px;
+  width:500px;
+  margin-left:75%;
 }
 
 #amount {
@@ -35,4 +35,9 @@ body {
 
 .node.fixed {
   fill: #f00;
+}
+
+#slider-panel {
+  position: absolute;
+  bottom: 50px;
 }

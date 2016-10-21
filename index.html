@@ -21,25 +21,19 @@
     <div id="graph-panel" class="col s10">
     </div>
     <div class="col s2">
-      <p class="col s12">
-        <label for="amount">Year range:</label>
+      <div class="col s12">
+        <label for="amount">Range:</label>
         <input type="text" name="amount" id="amount" disabled/>    
-      </p>
-      <p class="col s12">
+      </div>
+      <div class="col s12">
         <label for="scale">Scale:</label>
         <input type="number" name="scale" id="scale" min="0.1" step="0.1" value="1">
-      </p>
+      </div>
       <div class="col s12">
-        <ul>
-          <li>Coffee</li>
-          <li>Tea</li>
-          <li>Milk</li>
-          <li>Coffee</li>
-          <li>Tea</li>
-          <li>Milk</li>
-          <li>Coffee</li>
-          <li>Tea</li>
-          <li>Milk</li>
+        <label>Deleted:</label>
+      </div>
+      <div id="deleted-list">
+        <ul class="collection">
         </ul>
       </div>
       
@@ -47,7 +41,7 @@
   </div>
   
   <script src="graph.js" type="text/javascript"></script>
-  <div class="" style="margin-top: 135px">
+  <div id="slider-panel" >
     <div id="slider"></div>  
   </div>
   

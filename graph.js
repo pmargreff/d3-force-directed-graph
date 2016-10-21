@@ -210,7 +210,7 @@ function dblclick(d,i){
       d3.select(this).attr("visibility","hidden");
     }
   });
-  
+  $("#deleted-list ul").append('<li> <a class="collection-item">'+d.name+'</a></li>');
   // this.remove();
   // force.resume();//restart the layout
 }
