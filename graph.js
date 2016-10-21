@@ -16,6 +16,7 @@ $(function() {
 var scale = 1.0;
 var newNodes;
 var newLinks;
+var hidNodes = [];
 
 $("input[type=number]").bind('keyup input', function(){
   sumYearsRange($( "#slider" ).slider( "values", 0 ),$( "#slider" ).slider( "values", 1 ), true);
@@ -198,14 +199,53 @@ function tick() {
   node.attr("transform", function(d){ return "translate(" + d.x + "," + d.y + ")"; });
 }
 
-function dblclick(d){
-  d3.select(this).classed("fixed", d.fixed = false);
+function dblclick(d,i){
+  d3.select(this).attr("visibility","hidden");
+  hidNodes.push(i);
+  // d3.selectAll("line").attr("visibility","hidden");
+  
+  d3.selectAll('line')
+  .each(function(line, j) {
+    if (line.target === d || line.source === d) {
+      d3.select(this).attr("visibility","hidden");
+    }
+  });
+  
+  // console.log(hidNodes);
+  // link.style("opacity", function(o) {
+  //   return o.source === d || o.target === d ? 1 : opacity;
+  // });
+  // console.log(getLinks(d, d3.selectAll("line")));
+  // get all lines for a node
+  // hidde all lines from the node
+  // this.remove();
+  // force.resume();//restart the layout
+  // d3.select(this).classed("fixed", d.fixed = false);
 }
 
 function dragstart(d){
   d3.select(this).classed("fixed", d.fixed = true);
 }
 
+function getLinks( node, links ){
+  var nodes = [],
+  i = 0, l = links.length,
+  link;
+  
+  for ( ; i < l; ++i ){
+    link = links[i];
+    if ( link.target === node ){
+      nodes.push( link.source );
+      continue;
+    }
+    
+    if ( link.source === node ){
+      nodes.push( link.target );
+    }
+  }
+  
+  return nodes;
+}
 
 function createNodes(csv) {
   var nodes = [];
