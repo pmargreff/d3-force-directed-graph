@@ -200,9 +200,21 @@ function tick() {
 }
 
 function dblclick(d,i){
-  d3.select(this).attr("visibility","hidden");
   hidNodes.push(d);
-  // d3.selectAll("line").attr("visibility","hidden");
+  
+  d3.selectAll('circle')
+  .each(function(e) {
+    if (e == d) {
+      d3.select(this).attr("visibility","hidden");
+    }
+  });
+  
+  d3.selectAll('text')
+  .each(function(t) {
+    if (d.name == t.name) {
+      d3.select(this).attr("visibility","hidden");
+    }
+  });
   
   d3.selectAll('line')
   .each(function(line, j) {
@@ -210,9 +222,62 @@ function dblclick(d,i){
       d3.select(this).attr("visibility","hidden");
     }
   });
-  $("#deleted-list ul").append('<li> <a class="collection-item">'+d.name+'</a></li>');
-  // this.remove();
-  // force.resume();//restart the layout
+  $("#deleted-list").css({
+    display: "block"
+  });
+  $("#deleted-list ul").append('<li OnClick="display(this);" id="'+ d.name +'"> <a class="collection-item orange-text">'+d.name+'</a></li>');
+
+}
+
+function display(el) {
+  var id = $(el).attr('id');
+  el.remove();
+  var index;
+  
+  for (var i = 0; i < hidNodes.length; i++) {
+    console.log(hidNodes[i].name);
+    if (hidNodes[i].name == id) {
+      hidNodes.splice(i,1);
+    }
+  }
+  
+  // console.log(hidNodes);
+  
+  if($('#deleted-list li').length == 0){
+    $("#deleted-list").css({
+      display: "none"
+    });
+  }
+  
+  d3.selectAll('circle')
+  .each(function(d, i) {
+    if (d.name == id) {
+      index = i;
+      d3.select(this).attr("visibility","visible");
+    }
+  });
+  
+  d3.selectAll('text')
+  .each(function(t) {
+    if (id == t.name) {
+      d3.select(this).attr("visibility","visible");
+    }
+  });
+  d3.selectAll('line')
+  .each(function(line) {
+    if (line.target.index == index || line.source.index == index) {
+      d3.select(this).attr("visibility","visible");
+    }
+  });
+  
+  d3.selectAll('line')
+  .each(function(line) {
+    for (var i = 0; i < hidNodes.length; i++) {
+      if (line.target.index === hidNodes[i].index || line.source.index === hidNodes[i].index) {
+        d3.select(this).attr("visibility","hidden");
+      }
+    }
+  });
 }
 
 function dragstart(d){

@@ -22,8 +22,8 @@ Open `http://127.0.0.1:3000/`
 ## TODO:
 - [x] choose the size scale
 
-- [ ] choose the input pattern name and range
+- [x] add/remove nodes
 
 - [ ] choose the color scale
 
-- [ ] switch to change between add/remove and move nodes
+- [ ] choose the input pattern name and range
